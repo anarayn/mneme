@@ -1,0 +1,25 @@
+[package]
+name = "mneme-tokenizer"
+version = "0.1.0"
+edition = "2021"
+description = "MNEME tokenizer service — token counting, context compression, crypto helpers"
+
+[[bin]]
+name = "mneme-tokenizer"
+path = "src/main.rs"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+tonic = "0.12"
+prost = "0.13"
+tiktoken-rs = "0.6"
+aes-gcm = "0.10"
+sha2 = "0.10"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+anyhow = "1"
+
+[build-dependencies]
+tonic-build = "0.12"
