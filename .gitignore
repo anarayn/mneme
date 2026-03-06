@@ -205,3 +205,28 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Node.js / Frontend
+node_modules/
+.pnpm-store/
+dist/
+.turbo/
+
+# Editor
+.vscode/
+.idea/
+
+# Rust
+target/
+
+# Go vendor
+vendor/
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+
+# Fly
+fly.toml.bak

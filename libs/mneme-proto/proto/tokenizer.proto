@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package mneme.tokenizer.v1;
+
+option go_package = "github.com/mneme-ai/mneme/libs/mneme-proto/gen/go/tokenizer/v1;tokenizerv1";
+
+// TokenizerService — gRPC interface for Rust tokenizer service
+service TokenizerService {
+  // Count tokens for a given text and model
+  rpc CountTokens(CountTokensRequest) returns (CountTokensResponse);
+
+  // Compress context to fit within token budget
+  rpc CompressContext(CompressContextRequest) returns (CompressContextResponse);
+}
+
+message CountTokensRequest {
+  string text = 1;
+  string model = 2;  // e.g. "claude-sonnet-4-6"
+}
+
+message CountTokensResponse {
+  uint32 token_count = 1;
+  bool truncated = 2;
+}
+
+message Message {
+  string role = 1;    // "user" | "assistant" | "system"
+  string content = 2;
+  uint32 token_count = 3;
+}
+
+message CompressContextRequest {
+  repeated Message messages = 1;
+  uint32 token_budget = 2;
+  string model = 3;
+}
+
+message CompressContextResponse {
+  repeated Message compressed_messages = 1;
+  uint32 total_tokens = 2;
+  uint32 dropped_messages = 3;
+  string summary = 4;  // Summary of dropped context
+}

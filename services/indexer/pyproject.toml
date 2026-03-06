@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mneme-indexer"
+version = "0.1.0"
+description = "MNEME episodic + document indexer — Kafka consumer, Pinecone writer"
+requires-python = ">=3.12"
+dependencies = [
+    "confluent-kafka>=2.6.0",
+    "pinecone-client>=5.0.0",
+    "voyageai>=0.3.2",
+    "pydantic>=2.9.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["mneme"]

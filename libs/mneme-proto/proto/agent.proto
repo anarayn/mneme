@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package mneme.agent.v1;
+
+option go_package = "github.com/mneme-ai/mneme/libs/mneme-proto/gen/go/agent/v1;agentv1";
+
+// AgentService — gRPC interface between Gateway and Agent VM
+service AgentService {
+  // Stream a response for a user turn
+  rpc ProcessTurn(TurnRequest) returns (stream TurnChunk);
+
+  // Switch role DNA without losing session state
+  rpc SwitchRole(SwitchRoleRequest) returns (SwitchRoleResponse);
+
+  // Get current session state summary
+  rpc GetSessionState(GetSessionStateRequest) returns (SessionState);
+}
+
+message TurnRequest {
+  string session_id = 1;
+  string user_id = 2;
+  string content = 3;
+  repeated Attachment attachments = 4;
+  map<string, string> metadata = 5;
+}
+
+message Attachment {
+  string type = 1;   // "document", "image", "code"
+  string ref_id = 2; // document ID in vault
+  string name = 3;
+}
+
+message TurnChunk {
+  string delta = 1;
+  repeated ToolCall tool_calls = 2;
+  bool is_final = 3;
+  map<string, string> debug = 4;
+}
+
+message ToolCall {
+  string id = 1;
+  string name = 2;
+  string input_json = 3;
+  string output_json = 4;
+}
+
+message SwitchRoleRequest {
+  string session_id = 1;
+  string new_role = 2;
+}
+
+message SwitchRoleResponse {
+  bool success = 1;
+  string active_role = 2;
+}
+
+message GetSessionStateRequest {
+  string session_id = 1;
+}
+
+message SessionState {
+  string session_id = 1;
+  string user_id = 2;
+  string active_role = 3;
+  uint32 turn_count = 4;
+  repeated string active_tools = 5;
+}

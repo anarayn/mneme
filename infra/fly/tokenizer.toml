@@ -1,0 +1,17 @@
+app = "mneme-tokenizer"
+primary_region = "iad"
+
+[build]
+dockerfile = "../../services/tokenizer/Dockerfile"
+
+[env]
+  PORT = "50051"
+
+[http_service]
+  internal_port = 50051
+  protocol = "tcp"
+  force_https = false
+
+[[vm]]
+  size = "performance-1x"
+  memory = "512mb"

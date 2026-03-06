@@ -1,0 +1,36 @@
+replicaCount: 3
+
+image:
+  repository: gcr.io/mneme/gateway
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: LoadBalancer
+  port: 8080
+
+resources:
+  requests:
+    cpu: "500m"
+    memory: "512Mi"
+  limits:
+    cpu: "2000m"
+    memory: "2Gi"
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 70
+
+env:
+  - name: REDIS_URL
+    valueFrom:
+      secretKeyRef:
+        name: mneme-secrets
+        key: redis-url
+  - name: FLY_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: mneme-secrets
+        key: fly-api-token
